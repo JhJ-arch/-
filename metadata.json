@@ -1,0 +1,5 @@
+{
+  "name": "문해력 교실(by po)_배포용",
+  "description": "An application that generates educational explanatory texts and comprehension questions for elementary school students based on selected topics, grade levels, and difficulty. It includes features for regenerating content, fact-checking, and exporting to a Word document.",
+  "requestFramePermissions": []
+}
