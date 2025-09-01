@@ -282,7 +282,8 @@ const App: React.FC = () => {
     
                         const table = new Table({
                             rows: [ new TableRow({ children: [tableCell] }) ],
-                            width: { size: 5000, type: WidthType.PERCENTAGE },
+                            // 너비를 약 141mm에 해당하는 8000 DXA로 설정 (1인치 = 1440 DXA)
+                            width: { size: 8000, type: WidthType.DXA },
                         });
                         
                         docChildren.push(table);
