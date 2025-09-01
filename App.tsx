@@ -1,6 +1,7 @@
 
 
 
+
 import React, { useState, useCallback } from 'react';
 import * as docx from 'docx';
 import saveAs from 'file-saver';
@@ -436,7 +437,7 @@ const App: React.FC = () => {
                                </button>
                            </div>
                             {content.paragraphs.map((p, i) => (
-                                <div key={p.id} className="mb-4 p-4 border rounded-lg bg-slate-50/70">
+                                <div key={p.id} className="mb-4 p-4 border rounded-lg bg-slate-50 bg-opacity-[0.7]">
                                     <p className="text-slate-700 leading-relaxed text-lg mb-3">{p.content}</p>
                                     <div className="flex justify-end gap-2">
                                         <button onClick={() => handleRegenerateParagraph(i)} disabled={itemLoading[p.id]} className="flex items-center gap-1.5 text-sm py-1 px-2.5 bg-white border border-slate-300 rounded-md hover:bg-slate-100 text-slate-700 disabled:opacity-50 transition-colors">
@@ -472,7 +473,7 @@ const App: React.FC = () => {
                                </button>
                             </div>
                             {content.questions.map((q, i) => (
-                                <div key={q.id} className="mb-6 p-4 border rounded-lg bg-slate-50/70">
+                                <div key={q.id} className="mb-6 p-4 border rounded-lg bg-slate-50 bg-opacity-[0.7]">
                                     <p className="font-semibold mb-2">
                                         <span className="text-sm font-bold text-indigo-600 bg-indigo-100 px-2 py-0.5 rounded-full mr-2 align-middle">{q.questionType}</span>
                                         {i + 1}. {renderQuestionWithBox(q.questionText)}
