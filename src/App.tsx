@@ -188,7 +188,7 @@ const App: React.FC = () => {
     const exportToDocx = () => {
         if (!content) return;
 
-        const { Packer, Document, Paragraph: DocxParagraph, TextRun, HeadingLevel, Table, TableCell, TableRow, WidthType, BorderStyle } = docx;
+        const { Packer, Document, Paragraph: DocxParagraph, TextRun, HeadingLevel, Table, TableCell, TableRow, WidthType, BorderStyle, TableLayoutType } = docx;
 
         const createMultilineParagraphs = (text: string) => {
             return text.split('\n').map(line => 
@@ -284,6 +284,7 @@ const App: React.FC = () => {
                             rows: [ new TableRow({ children: [tableCell] }) ],
                              // 너비를 약 141mm에 해당하는 8000 DXA로 설정 (1인치 = 1440 DXA)
                             width: { size: 8000, type: WidthType.DXA },
+                            layout: TableLayoutType.FIXED,
                         });
                         
                         docChildren.push(table);
