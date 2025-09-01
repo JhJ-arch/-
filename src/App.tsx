@@ -1,7 +1,4 @@
 
-
-
-
 import React, { useState, useCallback } from 'react';
 import * as docx from 'docx';
 import saveAs from 'file-saver';

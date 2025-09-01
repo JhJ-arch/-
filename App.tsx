@@ -1,7 +1,4 @@
 
-
-
-
 import React, { useState, useCallback } from 'react';
 import * as docx from 'docx';
 import saveAs from 'file-saver';
@@ -499,7 +496,7 @@ const App: React.FC = () => {
                                                 }))}
                                                 className="p-1 border border-slate-300 rounded-md text-sm bg-white focus:ring-indigo-500 focus:border-indigo-500"
                                             >
-                                                {QUESTION_TYPE_LIST.map(type => <option key={type} value={type}>{type}</option>
+                                                {QUESTION_TYPE_LIST.map(type => <option key={type} value={type}>{type}</option>)}
                                             </select>
                                         </div>
                                         <button onClick={() => handleRegenerateQuestion(i)} disabled={itemLoading[q.id]} className="flex items-center gap-1.5 text-sm py-1 px-2.5 bg-white border border-slate-300 rounded-md hover:bg-slate-100 text-slate-700 disabled:opacity-50 transition-colors">
