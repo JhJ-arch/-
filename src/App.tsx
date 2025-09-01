@@ -1,10 +1,14 @@
+
+
+
+
 import React, { useState, useCallback } from 'react';
 import * as docx from 'docx';
 import saveAs from 'file-saver';
 import { GenerationOptions, GeneratedContent, Paragraph, Question, VocabularyItem, QuestionFormat, QuestionType, QuestionTypes } from './types';
 import { generateFullPassageAndQuestions, regenerateParagraph, factCheckParagraph, regenerateQuestionAndUpdatePassage } from './services/geminiService';
 import { TOPIC_CATEGORIES, GRADES, DIFFICULTIES, WORD_COUNTS } from './constants';
-import { SparklesIcon, RefreshIcon, CheckCircleIcon, DownloadIcon } from './components/icons';
+import { SparklesIcon, RefreshIcon, CheckCircleIcon, DownloadIcon, XIcon } from './components/icons';
 import LoadingSpinner from './components/LoadingSpinner';
 
 const DIRECT_INPUT_KEY = 'direct-input';
@@ -243,8 +247,17 @@ const App: React.FC = () => {
                         bogiContent = bogiMatch[1].trim();
                     }
                     
+                    const questionFullText = `${index + 1}. [${q.questionType}] ${questionPart}`;
+                    const questionLines = questionFullText.split('\n');
+                    const questionTextRuns = questionLines.flatMap((line, idx) => {
+                        const run = new TextRun({ text: line, bold: true });
+                        if (idx < questionLines.length - 1) {
+                            return [run, new TextRun({ break: 1 })];
+                        }
+                        return [run];
+                    });
                     docChildren.push(new DocxParagraph({
-                        children: [new TextRun({ text: `${index + 1}. [${q.questionType}] ${questionPart}`, bold: true })],
+                        children: questionTextRuns,
                         spacing: { after: 100 }
                     }));
                     
@@ -259,20 +272,20 @@ const App: React.FC = () => {
                                 ...bogiParagraphs
                             ],
                             shading: {
-                                fill: "F1F5F9", // slate-100
+                                fill: "F1F5F9",
                             },
                             borders: {
-                                top: { style: BorderStyle.SINGLE, size: 4, color: "CBD5E1" }, // slate-300ish
-                                bottom: { style: BorderStyle.SINGLE, size: 4, color: "CBD5E1" },
-                                left: { style: BorderStyle.SINGLE, size: 4, color: "CBD5E1" },
-                                right: { style: BorderStyle.SINGLE, size: 4, color: "CBD5E1" },
+                                top: { style: BorderStyle.SINGLE, size: 6, color: "CBD5E1" },
+                                bottom: { style: BorderStyle.SINGLE, size: 6, color: "CBD5E1" },
+                                left: { style: BorderStyle.SINGLE, size: 6, color: "CBD5E1" },
+                                right: { style: BorderStyle.SINGLE, size: 6, color: "CBD5E1" },
                             },
-                            margins: { top: 100, bottom: 100, left: 100, right: 100 },
+                            margins: { top: 140, bottom: 140, left: 140, right: 140 },
                         });
     
                         const table = new Table({
                             rows: [ new TableRow({ children: [tableCell] }) ],
-                            width: { size: 100, type: WidthType.PERCENTAGE },
+                            width: { size: 9000, type: WidthType.DXA },
                         });
                         
                         docChildren.push(table);
@@ -389,8 +402,13 @@ const App: React.FC = () => {
             
             {factCheckResult && (
                 <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50 p-4" onClick={() => setFactCheckResult(null)}>
-                    <div className="bg-white rounded-lg shadow-xl p-6 max-w-2xl w-full" onClick={e => e.stopPropagation()}>
-                        <h3 className="text-xl font-bold mb-4 text-slate-800">{factCheckResult.title}</h3>
+                    <div className="bg-white rounded-lg shadow-xl p-6 max-w-lg w-full relative" onClick={e => e.stopPropagation()}>
+                        <div className="flex justify-between items-center mb-4">
+                            <h3 className="text-xl font-bold text-slate-800">{factCheckResult.title}</h3>
+                            <button onClick={() => setFactCheckResult(null)} className="p-1 rounded-full text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors" aria-label="Close">
+                                <XIcon className="w-5 h-5" />
+                            </button>
+                        </div>
                         
                         <div className="mb-4">
                             <h4 className="font-semibold text-slate-600 mb-2">검증 대상 문단:</h4>
@@ -399,15 +417,9 @@ const App: React.FC = () => {
 
                         <div>
                             <h4 className="font-semibold text-slate-600 mb-2">검증 결과:</h4>
-                            <div className="whitespace-pre-wrap bg-slate-50 p-4 rounded-md border text-slate-700 leading-relaxed">
+                            <div className="whitespace-pre-wrap bg-slate-50 p-4 rounded-md border text-slate-700 leading-relaxed max-h-[50vh] overflow-y-auto">
                                 {factCheckResult.content}
                             </div>
-                        </div>
-
-                        <div className="text-right mt-6">
-                            <button onClick={() => setFactCheckResult(null)} className="bg-indigo-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-indigo-700 transition-colors">
-                                닫기
-                            </button>
                         </div>
                     </div>
                 </div>
